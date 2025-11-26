@@ -7,7 +7,7 @@ the project is built with Spring Boot 3.2, PostgreSQL, and Docker.
 ## Features
 
 - ✅ RESTful API for FX deal saving
-- ✅ Comprehensive validation (JSR-303 + Custom validators : an simple validator utility with proper exception handling and a specific method for further logic)
+- ✅ Comprehensive validation (JSR-303 + Custom validators : a simple validator utility with proper exception handling and a specific method for further logic)
 - ✅ Duplicate deal prevention with unique constraints
 - ✅ Structured logging with SLF4J
 - ✅ Global exception handling with propper HTTP codes in return
