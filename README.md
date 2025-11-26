@@ -2,7 +2,7 @@
 
 ## Overview
 
-the project is built with Spring Boot 3.2, PostgreSQL, and Docker.
+The project is built with Spring Boot 3.2, PostgreSQL, and Docker.
 
 ## Features
 
