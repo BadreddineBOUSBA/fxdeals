@@ -3,11 +3,13 @@ package com.bloomberg.fxdeals.controller;
 
 import com.bloomberg.fxdeals.dto.FXDealRequest;
 import com.bloomberg.fxdeals.dto.FXDealResponse;
+import com.bloomberg.fxdeals.exception.DuplicateDealException;
+import com.bloomberg.fxdeals.exception.GlobalExceptionHandler;
+import com.bloomberg.fxdeals.exception.InvalidRequestException;
 import com.bloomberg.fxdeals.service.FXDealService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +18,33 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 
+
 @RestController
 @RequestMapping("/api/v1/deals")
-@Slf4j
 @AllArgsConstructor
 public class FXDealController {
 
 
     private final FXDealService dealService;
 
+    private final GlobalExceptionHandler globalExceptionHandler;
 
 
     @PostMapping
-    public ResponseEntity<FXDealResponse> createDeal(@Valid @RequestBody FXDealRequest request) throws Exception {
-
-        FXDealResponse createdDeal = dealService.createDeal(request);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdDeal);
+    public ResponseEntity<?> createDeal(@Valid @RequestBody FXDealRequest request) throws Exception {
+        try{
+            FXDealResponse createdDeal = dealService.createDeal(request);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(createdDeal);
+        }catch(DuplicateDealException exception){
+             return   globalExceptionHandler.handleDuplicateDealException(exception);
+        }catch(InvalidRequestException exception){
+             return   globalExceptionHandler.invalidRequestException(exception);
+        }catch(Exception exception){
+            // to handle any other technical exception thrown
+            return   globalExceptionHandler.handleGenericException(exception);
+        }
     }
 
 

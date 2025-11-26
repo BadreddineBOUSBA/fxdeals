@@ -12,6 +12,7 @@ import com.bloomberg.fxdeals.service.impl.FXDealServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,8 +36,8 @@ class FXDealServiceTest {
     @Mock
     private FXDealMapper fxDealMapper;
 
-    @Mock
-    private FXDealService dealService;
+    @InjectMocks
+    private FXDealServiceImpl dealService;
 
     private FXDealRequest validRequest;
     private FXDeal savedDeal;
@@ -174,8 +175,8 @@ class FXDealServiceTest {
 
     @Test
     void createDeal_WithDifferentCurrencies_ShouldSucceed() throws Exception {
-        validRequest.setFromCurrencyCode("GBP");
-        validRequest.setToCurrencyCode("JPY");
+        validRequest.setFromCurrencyCode("EUR");
+        validRequest.setToCurrencyCode("USD");
         when(dealRepository.existsByDealId(anyString())).thenReturn(false);
         when(fxDealMapper.toEntity(any(FXDealRequest.class))).thenReturn(savedDeal);
         when(dealRepository.save(any(FXDeal.class))).thenReturn(savedDeal);
